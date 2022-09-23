@@ -1,5 +1,4 @@
 const express = require('express');
-const expressSession = require('express-session');
 const passport = require('passport');
 const expressListEndpoints = require('express-list-endpoints');
 require('dotenv').config();
@@ -11,16 +10,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(
-// 	expressSession({
-// 		secret: 'thisissecret12893',
-// 		resave: true,
-// 		saveUninitialized: true,
-// 	})
-// );
-
 app.use(passport.initialize());
-// app.use(passport.session());
 require('./services/passportLocalStrategy');
 require('./services/jwtStrategy');
 
