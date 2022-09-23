@@ -1,5 +1,4 @@
 const { application } = require('express');
-const { isAuthenticated } = require('../middlewares/isAuth');
 const localAuthRoutes = require('./localAuth');
 // const googleAuthRoutes = require('./googleAuth');
 // const facebookAuthRoutes = require('./facebookAuth');
