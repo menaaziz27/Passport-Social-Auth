@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema(
 	{
@@ -11,6 +12,22 @@ const userSchema = new Schema(
 		versionKey: false,
 	}
 );
+
+const isProduction = process.env.NODE_ENV === 'production';
+// const secretOrKey = isProduction ? process.env.JWT_SECRET_PROD : process.env.JWT_SECRET_DEV;
+const secretOrKey = 'asdfghjjklsad';
+
+userSchema.methods.generateJWT = function () {
+	const token = jwt.sign(
+		{
+			expiresIn: '12h',
+			id: this._id,
+			email: this.email,
+		},
+		secretOrKey
+	);
+	return token;
+};
 
 const User = model('User', userSchema);
 
