@@ -8,7 +8,6 @@ const passportLogin = new localStrategy(
 	{ usernameField: 'email', passReqToCallback: true },
 	async (req, email, password, done) => {
 		const { error } = loginSchema.validate(req.body);
-		console.log(error);
 		if (error) return done(null, false, { message: error.details[0].message });
 
 		try {

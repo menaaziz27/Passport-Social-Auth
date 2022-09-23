@@ -6,7 +6,6 @@ const router = require('express').Router();
 router.post('/register', async (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
-	console.log(req.body);
 
 	try {
 		const hashedPassword = await bcrypt.hash(password, 8);
