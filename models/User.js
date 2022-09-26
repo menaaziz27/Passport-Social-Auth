@@ -10,14 +10,6 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		username: {
-			type: String,
-			lowercase: true,
-			unique: true,
-			required: [true, "can't be blank"],
-			match: [/^[a-zA-Z0-9_]+$/, 'is invalid'],
-			index: true,
-		},
 		avatar: String,
 		googleId: {
 			type: String,
