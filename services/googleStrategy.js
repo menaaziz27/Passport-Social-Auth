@@ -1,6 +1,7 @@
 const passport = require('passport');
 const { Strategy: GoogleStrategy } = require('passport-google-oauth2');
 const User = require('../models/User');
+const { asyncHandler } = require('../utils/asyncHandler');
 
 const googleLogin = new GoogleStrategy(
 	{
@@ -11,33 +12,25 @@ const googleLogin = new GoogleStrategy(
 		// scope: '',
 		// passReqToCallback: true,
 	},
-	async (accessToken, refreshToken, profile, done) => {
-		try {
-			const oldUser = await User.findOne({ email: profile.email });
-			if (oldUser) {
-				return done(null, oldUser);
-			}
-		} catch (e) {
-			console.log(e);
+	asyncHandler(async (accessToken, refreshToken, profile, done) => {
+		const oldUser = await User.findOne({ email: profile.email });
+		if (oldUser) {
+			return done(null, oldUser);
 		}
 
 		// if there's no user create him in the database and return him
-		try {
-			const user = new User({
-				provider: 'google',
-				googleId: profile.id,
-				username: `user${profile.id}`,
-				email: profile.email,
-				name: profile.displayName,
-				avatar: profile.picture,
-			});
+		const user = new User({
+			provider: 'google',
+			googleId: profile.id,
+			username: `user${profile.id}`,
+			email: profile.email,
+			name: profile.displayName,
+			avatar: profile.picture,
+		});
 
-			console.log({ user });
-			await user.save();
-		} catch (e) {
-			console.log(e);
-		}
-	}
+		console.log({ user });
+		await user.save();
+	})
 );
 
 passport.use(googleLogin);

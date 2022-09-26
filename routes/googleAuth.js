@@ -20,7 +20,8 @@ router.get(
 		const user = req.user;
 		console.log({ user });
 		res.cookie('x-auth-cookie', token);
-		res.redirect(clientUrl);
+		// res.redirect(clientUrl);
+		res.json({ token, user });
 	}
 );
 
