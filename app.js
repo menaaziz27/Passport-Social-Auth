@@ -4,6 +4,8 @@ const cors = require('cors');
 const expressListEndpoints = require('express-list-endpoints');
 require('dotenv').config();
 const { connectToDb } = require('./db');
+const { requireJwtAuth } = require('./middlewares/requireJwtAuth');
+const { errorHandler, notFound } = require('./middlewares/errorHandler');
 const PORT = 3000;
 const app = express();
 
@@ -41,9 +43,13 @@ app.use('*', (req, res, next) => {
 
 app.use(require('./routes'));
 
-app.use((error, req, res, next) => {
-	res.json(error);
+app.get('/protected', requireJwtAuth, (req, res) => {
+	console.log(req.user);
+	res.json('authenticated!');
 });
+
+app.use(notFound);
+app.use(errorHandler);
 
 // console.log(expressListEndpoints(app));
 
